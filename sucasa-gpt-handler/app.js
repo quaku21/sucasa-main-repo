@@ -122,7 +122,7 @@ app.use("/api/callSucasaGPT", async (req, res, next) => {
 
 app.get("*", function (req, res) {
   //res.render("pages/index/index.html", { csrfToken });
-  res.send({
+  return res.send({
     statusCode: 200,
     message: "Server running",
   });
