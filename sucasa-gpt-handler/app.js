@@ -7,13 +7,30 @@ const OpenAI = require("openai");
 require("dotenv").config();
 const fileReader = require("./file-reader.js");
 const chatHistoryController = require("./chat-history-controller.js");
-const dbConfigController = require("./db.js");
 const mysql = require("mysql2/promise");
+const hbs = require("hbs");
+const mailer = require("./mailer.js");
 
 const app = express();
+
+app.engine("html", hbs.__express);
+app.set("views", "views");
+app.set("view engine", "ejs");
+
 app.use(express.json()); // Parses json, multi-part (file), url-encoded
 app.use(bodyParser.json());
 app.use(cors());
+
+// Function to read and cache the file
+function cacheFileContent(filePath) {
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading file:", err);
+      return;
+    }
+    cachedContent = data;
+  });
+}
 
 // Define routes here
 app.use(function (req, res, next) {
@@ -77,9 +94,7 @@ app.use("/api/callSucasaGPT", async (req, res, next) => {
       const gptResponse = response.choices[0].message.content;
 
       // Connect to the database
-      const connection = await mysql.createConnection(
-        dbConfigController.dbConfig
-      );
+      const connection = await mysql.createConnection(config.config.database);
 
       // Determine the new sequenceID
       const [rows] = await connection.execute(
@@ -108,7 +123,10 @@ app.use("/api/callSucasaGPT", async (req, res, next) => {
       await connection.end();
 
       // Return GPT's response
-      return res.status(200).json(gptResponse);
+
+      //set a custom field here
+
+      return res.status(200).json({ response: gptResponse });
     } else {
       throw new Error("Invalid response from GPT API");
     }
@@ -122,11 +140,12 @@ app.use("/api/callSucasaGPT", async (req, res, next) => {
 
 app.get("*", function (req, res) {
   //res.render("pages/index/index.html", { csrfToken });
+  //console.log("Hit here");
   return res.send({
     statusCode: 200,
-    message: "Server running",
+    message: "Sucasa GPT Server running",
   });
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

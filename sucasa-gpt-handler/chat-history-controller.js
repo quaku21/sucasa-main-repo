@@ -1,11 +1,10 @@
 const mysql = require("mysql2/promise");
 const config = require("./config.js");
-const dbConfigController = require("./db.js");
 
 const chatHistoryController = async function getConversationHistory(
   subscriberID
 ) {
-  const dbConfig = dbConfigController.dbConfig;
+  const dbConfig = config.config.database;
 
   try {
     const connection = await mysql.createConnection(dbConfig);
