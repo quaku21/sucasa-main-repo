@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sucasa_edit/second_screen.dart';
+import 'package:sucasa_edit/home_screen.dart';
 import 'package:sucasa_edit/main.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SecondScreen()),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
