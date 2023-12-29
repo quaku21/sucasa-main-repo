@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:sucasa_edit/main.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,6 +35,8 @@ class HomeScreen extends StatelessWidget {
 
 class SecondScreenContent extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
+
+  SecondScreenContent({super.key});
 
   @override
   Widget build(BuildContext context) {
